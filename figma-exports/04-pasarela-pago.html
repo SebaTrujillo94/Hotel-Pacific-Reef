@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Pacific Reef - Pasarela de Pago</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0EA5E9;
+            --secondary: #06B6D4;
+            --accent: #F59E0B;
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --white: #FFFFFF;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.3) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 24px 32px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .brand-text {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--success);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+        }
+
+        .payment-form {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-subtitle {
+            color: var(--gray-600);
+            margin-bottom: 32px;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: var(--gray-200);
+            z-index: 1;
+        }
+
+        .step-indicator::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 66%;
+            height: 2px;
+            background: var(--primary);
+            z-index: 2;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 3;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .step.completed .step-circle {
+            background: var(--primary);
+            color: white;
+        }
+
+        .step.active .step-circle {
+            background: var(--primary);
+            color: white;
+        }
+
+        .step.pending .step-circle {
+            background: var(--gray-200);
+            color: var(--gray-500);
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: var(--gray-600);
+            text-align: center;
+        }
+
+        .payment-methods {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 16px;
+        }
+
+        .method-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .method-option {
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .method-option:hover {
+            border-color: var(--primary);
+        }
+
+        .method-option.active {
+            border-color: var(--primary);
+            background: rgba(14, 165, 233, 0.05);
+        }
+
+        .method-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .method-name {
+            font-weight: 600;
+            color: var(--gray-900);
+            font-size: 14px;
+        }
+
+        .card-form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.row {
+            grid-template-columns: 2fr 1fr;
+            display: grid;
+            gap: 16px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 14px;
+        }
+
+        .form-input {
+            padding: 16px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon input {
+            padding-left: 48px;
+        }
+
+        .input-icon::before {
+            content: attr(data-icon);
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 16px;
+            z-index: 1;
+        }
+
+        .billing-address {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+
+        .address-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .address-grid .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+            height: fit-content;
+        }
+
+        .summary-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reservation-details {
+            margin-bottom: 24px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .pricing-section {
+            margin-bottom: 24px;
+            padding-top: 24px;
+            border-top: 2px solid var(--gray-200);
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .price-label {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        .price-value {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .total-row {
+            border-top: 2px solid var(--gray-200);
+            padding-top: 16px;
+            margin-top: 16px;
+        }
+
+        .total-row .price-label {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .total-row .price-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .deposit-info {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .deposit-title {
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .deposit-text {
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.5;
+        }
+
+        .payment-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 16px;
+        }
+
+        .payment-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .security-info {
+            text-align: center;
+            color: var(--gray-600);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .security-badge-small {
+            background: var(--gray-100);
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .promo-section {
+            margin-bottom: 24px;
+        }
+
+        .promo-input {
+            display: flex;
+            gap: 12px;
+        }
+
+        .promo-input input {
+            flex: 1;
+        }
+
+        .promo-button {
+            padding: 12px 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--success);
+            padding: 12px 16px;
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+            padding: 12px 16px;
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-card {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .method-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .address-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .step-indicator {
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo">🏨</div>
+                <div class="brand-text">Pacific Reef</div>
+            </div>
+            <div class="security-badge">
+                <span>🔒</span>
+                <span>Conexión Segura SSL</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Payment Form -->
+            <div class="payment-form">
+                <h1 class="page-title">💳 Finalizar Reserva</h1>
+                <p class="page-subtitle">Complete sus datos de pago para confirmar su reserva</p>
+                
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Selección</div>
+                    </div>
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Detalles</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Pago</div>
+                    </div>
+                    <div class="step pending">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Confirmación</div>
+                    </div>
+                </div>
+
+                <div class="success-message">
+                    ✅ Código promocional aplicado correctamente
+                </div>
+
+                <div class="error-message">
+                    ❌ Error al procesar el pago. Verifique sus datos.
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="payment-methods">
+                    <h2 class="section-title">Método de Pago</h2>
+                    <div class="method-options">
+                        <div class="method-option active">
+                            <div class="method-icon">💳</div>
+                            <div class="method-name">Tarjeta de Crédito</div>
+                        </div>
+                        <div class="method-option">
+                            <div class="method-icon">🏦</div>
+                            <div class="method-name">Transferencia</div>
+                        </div>
+                        <div class="method-option">
+                            <div class="method-icon">📱</div>
+                            <div class="method-name">PayPal</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Form -->
+                <form class="card-form">
+                    <div class="form-group">
+                        <label class="form-label">Nombre del Titular</label>
+                        <div class="input-icon" data-icon="👤">
+                            <input type="text" class="form-input" placeholder="Nombre completo como aparece en la tarjeta">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Número de Tarjeta</label>
+                        <div class="input-icon" data-icon="💳">
+                            <input type="text" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="form-group">
+                            <label class="form-label">Fecha de Expiración</label>
+                            <div class="input-icon" data-icon="📅">
+                                <input type="text" class="form-input" placeholder="MM/AA" maxlength="5">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Código CVV</label>
+                            <div class="input-icon" data-icon="🔐">
+                                <input type="text" class="form-input" placeholder="123" maxlength="4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Billing Address -->
+                    <div class="billing-address">
+                        <h3 class="section-title">Dirección de Facturación</h3>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="sameAddress" class="checkbox" checked>
+                            <label for="sameAddress" class="checkbox-label">
+                                Usar la misma dirección del huésped
+                            </label>
+                        </div>
+
+                        <div class="address-grid">
+                            <div class="form-group full">
+                                <label class="form-label">Dirección</label>
+                                <input type="text" class="form-input" placeholder="Calle, número, piso, etc.">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Ciudad</label>
+                                <input type="text" class="form-input" placeholder="Ciudad">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Código Postal</label>
+                                <input type="text" class="form-input" placeholder="12345">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">País</label>
+                                <select class="form-input">
+                                    <option>República Dominicana</option>
+                                    <option>Estados Unidos</option>
+                                    <option>México</option>
+                                    <option>España</option>
+                                    <option>Colombia</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Estado/Provincia</label>
+                                <input type="text" class="form-input" placeholder="Estado o Provincia">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Summary Card -->
+            <div class="summary-card">
+                <h2 class="summary-title">📋 Resumen de Reserva</h2>
+                
+                <div class="reservation-details">
+                    <div class="detail-row">
+                        <span class="detail-label">🏨 Hotel</span>
+                        <span class="detail-value">Pacific Reef</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">🛏️ Habitación</span>
+                        <span class="detail-value">Suite Superior</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">📅 Check-in</span>
+                        <span class="detail-value">15 Enero 2024</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">📅 Check-out</span>
+                        <span class="detail-value">18 Enero 2024</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">🌙 Noches</span>
+                        <span class="detail-value">3 noches</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">👥 Huéspedes</span>
+                        <span class="detail-value">2 adultos</span>
+                    </div>
+                </div>
+
+                <!-- Promo Code -->
+                <div class="promo-section">
+                    <h3 class="section-title">🎟️ Código Promocional</h3>
+                    <div class="promo-input">
+                        <input type="text" class="form-input" placeholder="Ingrese código">
+                        <button class="promo-button">Aplicar</button>
+                    </div>
+                </div>
+
+                <!-- Pricing -->
+                <div class="pricing-section">
+                    <div class="price-row">
+                        <span class="price-label">Tarifa base (3 noches)</span>
+                        <span class="price-value">$375.00</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">Impuestos y tasas</span>
+                        <span class="price-value">$52.50</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">Descuento promocional</span>
+                        <span class="price-value" style="color: var(--success);">-$25.00</span>
+                    </div>
+                    <div class="price-row total-row">
+                        <span class="price-label">Total</span>
+                        <span class="price-value">$402.50</span>
+                    </div>
+                </div>
+
+                <!-- Deposit Info -->
+                <div class="deposit-info">
+                    <div class="deposit-title">
+                        <span>💰</span>
+                        <span>Pago del Depósito (30%)</span>
+                    </div>
+                    <div class="deposit-text">
+                        Solo necesita pagar $120.75 ahora para confirmar su reserva. 
+                        El saldo restante de $281.75 se pagará durante el check-in.
+                    </div>
+                </div>
+
+                <!-- Payment Button -->
+                <button class="payment-button">
+                    🔒 Pagar $120.75 - Confirmar Reserva
+                </button>
+
+                <!-- Security Info -->
+                <div class="security-info">
+                    <p>🔐 Su información está protegida con encriptación SSL de 256 bits</p>
+                    <div class="security-badges">
+                        <span class="security-badge-small">🛡️ SSL</span>
+                        <span class="security-badge-small">💳 PCI DSS</span>
+                        <span class="security-badge-small">🔒 Seguro</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

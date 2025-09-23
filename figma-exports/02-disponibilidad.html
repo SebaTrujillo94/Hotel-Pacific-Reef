@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Pacific Reef - Disponibilidad</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0EA5E9;
+            --secondary: #06B6D4;
+            --accent: #F59E0B;
+            --success: #10B981;
+            --danger: #EF4444;
+            --white: #FFFFFF;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.3) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 24px 32px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .brand-text {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .search-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .search-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .search-subtitle {
+            color: var(--gray-600);
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 16px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 14px;
+        }
+
+        .form-input {
+            padding: 16px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        }
+
+        .search-button {
+            padding: 16px 24px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .filters {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 24px 32px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .filters-title {
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .price-range {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .price-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+        }
+
+        .results-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .results-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .results-count {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        .sort-select {
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            background: white;
+        }
+
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .room-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+        }
+
+        .room-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .room-image {
+            height: 200px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+        }
+
+        .room-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--success);
+            color: white;
+            padding: 6px 12px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .room-content {
+            padding: 24px;
+        }
+
+        .room-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 16px;
+        }
+
+        .room-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .room-type {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        .room-price {
+            text-align: right;
+        }
+
+        .price-amount {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .price-period {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        .room-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .feature-tag {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 6px 12px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .room-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        .room-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: white;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary {
+            flex: 2;
+            padding: 12px 16px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 48px;
+            color: var(--gray-600);
+        }
+
+        .no-results-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 32px;
+            gap: 8px;
+        }
+
+        .page-btn {
+            padding: 12px 16px;
+            border: 1px solid var(--gray-300);
+            background: white;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .rooms-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .room-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo">🏨</div>
+                <div class="brand-text">Pacific Reef</div>
+            </div>
+            <div class="user-menu">
+                <span>👤 Hola, Juan</span>
+                <button class="btn-secondary">Cerrar Sesión</button>
+            </div>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <h1 class="search-title">🔍 Buscar Habitaciones</h1>
+            <p class="search-subtitle">Encuentra la habitación perfecta para tu estadía</p>
+            
+            <div class="search-form">
+                <div class="form-group">
+                    <label class="form-label">📅 Check-in</label>
+                    <input type="date" class="form-input" value="2024-01-15">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">📅 Check-out</label>
+                    <input type="date" class="form-input" value="2024-01-18">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">👥 Huéspedes</label>
+                    <select class="form-input">
+                        <option>1 Adulto</option>
+                        <option>2 Adultos</option>
+                        <option>2 Adultos + 1 Niño</option>
+                        <option>2 Adultos + 2 Niños</option>
+                        <option>3 Adultos</option>
+                        <option>4 Adultos</option>
+                    </select>
+                </div>
+                <button class="search-button">🔍 Buscar</button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <div class="filters-title">🎛️ Filtros</div>
+            <div class="filter-row">
+                <div class="filter-item">
+                    <label class="form-label">Tipo de Habitación</label>
+                    <select class="form-input">
+                        <option>Todas</option>
+                        <option>Estándar</option>
+                        <option>Superior</option>
+                        <option>Suite</option>
+                        <option>Presidencial</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label class="form-label">Vista</label>
+                    <select class="form-input">
+                        <option>Cualquiera</option>
+                        <option>Vista al Mar</option>
+                        <option>Vista a la Ciudad</option>
+                        <option>Vista al Jardín</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label class="form-label">Rango de Precio (por noche)</label>
+                    <div class="price-range">
+                        <input type="number" class="price-input" placeholder="Min" value="50">
+                        <span>-</span>
+                        <input type="number" class="price-input" placeholder="Max" value="300">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="results-section">
+            <div class="results-header">
+                <div>
+                    <h2 class="results-title">✨ Habitaciones Disponibles</h2>
+                    <p class="results-count">12 habitaciones encontradas para 15-18 Enero 2024</p>
+                </div>
+                <select class="sort-select">
+                    <option>Ordenar por: Precio (menor a mayor)</option>
+                    <option>Ordenar por: Precio (mayor a menor)</option>
+                    <option>Ordenar por: Popularidad</option>
+                    <option>Ordenar por: Calificación</option>
+                </select>
+            </div>
+
+            <div class="rooms-grid">
+                <!-- Room Card 1 -->
+                <div class="room-card">
+                    <div class="room-image">
+                        🛏️
+                        <div class="room-badge">Disponible</div>
+                    </div>
+                    <div class="room-content">
+                        <div class="room-header">
+                            <div>
+                                <h3 class="room-title">Habitación Estándar</h3>
+                                <p class="room-type">Cama Queen • Vista al Jardín</p>
+                            </div>
+                            <div class="room-price">
+                                <div class="price-amount">$85</div>
+                                <div class="price-period">por noche</div>
+                            </div>
+                        </div>
+                        
+                        <div class="room-features">
+                            <span class="feature-tag">🌐 WiFi</span>
+                            <span class="feature-tag">❄️ A/C</span>
+                            <span class="feature-tag">📺 TV</span>
+                            <span class="feature-tag">🛁 Baño Privado</span>
+                        </div>
+                        
+                        <div class="room-details">
+                            <div class="detail-item">
+                                <span>📐</span>
+                                <span>25 m²</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>👥</span>
+                                <span>Máx. 2 huéspedes</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>🏢</span>
+                                <span>Piso 2-4</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>⭐</span>
+                                <span>4.2/5 (156 reseñas)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="room-actions">
+                            <button class="btn-secondary">📋 Detalles</button>
+                            <button class="btn-primary">🛒 Reservar Ahora</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room Card 2 -->
+                <div class="room-card">
+                    <div class="room-image">
+                        🛏️
+                        <div class="room-badge">Disponible</div>
+                    </div>
+                    <div class="room-content">
+                        <div class="room-header">
+                            <div>
+                                <h3 class="room-title">Habitación Superior</h3>
+                                <p class="room-type">Cama King • Vista al Mar</p>
+                            </div>
+                            <div class="room-price">
+                                <div class="price-amount">$125</div>
+                                <div class="price-period">por noche</div>
+                            </div>
+                        </div>
+                        
+                        <div class="room-features">
+                            <span class="feature-tag">🌐 WiFi</span>
+                            <span class="feature-tag">❄️ A/C</span>
+                            <span class="feature-tag">📺 Smart TV</span>
+                            <span class="feature-tag">🛁 Jacuzzi</span>
+                            <span class="feature-tag">🌊 Vista al Mar</span>
+                        </div>
+                        
+                        <div class="room-details">
+                            <div class="detail-item">
+                                <span>📐</span>
+                                <span>35 m²</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>👥</span>
+                                <span>Máx. 2 huéspedes</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>🏢</span>
+                                <span>Piso 5-8</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>⭐</span>
+                                <span>4.7/5 (203 reseñas)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="room-actions">
+                            <button class="btn-secondary">📋 Detalles</button>
+                            <button class="btn-primary">🛒 Reservar Ahora</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room Card 3 -->
+                <div class="room-card">
+                    <div class="room-image">
+                        🏨
+                        <div class="room-badge">Disponible</div>
+                    </div>
+                    <div class="room-content">
+                        <div class="room-header">
+                            <div>
+                                <h3 class="room-title">Suite Presidencial</h3>
+                                <p class="room-type">Suite Completa • Vista Panorámica</p>
+                            </div>
+                            <div class="room-price">
+                                <div class="price-amount">$285</div>
+                                <div class="price-period">por noche</div>
+                            </div>
+                        </div>
+                        
+                        <div class="room-features">
+                            <span class="feature-tag">🌐 WiFi Premium</span>
+                            <span class="feature-tag">❄️ A/C</span>
+                            <span class="feature-tag">📺 TV 75"</span>
+                            <span class="feature-tag">🛁 Spa Privado</span>
+                            <span class="feature-tag">🍾 Minibar</span>
+                            <span class="feature-tag">🏝️ Terraza</span>
+                        </div>
+                        
+                        <div class="room-details">
+                            <div class="detail-item">
+                                <span>📐</span>
+                                <span>85 m²</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>👥</span>
+                                <span>Máx. 4 huéspedes</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>🏢</span>
+                                <span>Piso 12</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>⭐</span>
+                                <span>4.9/5 (89 reseñas)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="room-actions">
+                            <button class="btn-secondary">📋 Detalles</button>
+                            <button class="btn-primary">🛒 Reservar Ahora</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <button class="page-btn">← Anterior</button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">Siguiente →</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
